@@ -2,6 +2,8 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,7 +40,27 @@ public class SpelBord {
         // Filling up rows and columns
         for(int i = 0; i < ROWS; i++){
             for(int j = 0; j < COLUMNS; j++){
-                board.add(new JLabel((ROWS - i) - 1 + " " + j), i, j);
+                //JLabel label = new JLabel((ROWS - i) - 1 + " " + j);
+                JLabel label = new JLabel();
+                String workingDir = System.getProperty("user.dir");     
+                ImageIcon icon;
+                
+                if((i + 1) == ROWS && (j + 1) == COLUMNS){
+                    icon = new ImageIcon(workingDir + "\\projectImg\\" + "Eindpunt.png");                 
+                }
+                else if(i == 0 && j == 0){
+                    icon = new ImageIcon(workingDir + "\\projectImg\\" + "Figure_Down.png");
+                }
+                else{
+                    icon = new ImageIcon(workingDir + "\\projectImg\\" + "Muur.png");                    
+                }
+                
+                Image image = icon.getImage();
+                Image newimg = image.getScaledInstance(65, 50,  java.awt.Image.SCALE_SMOOTH);
+                icon = new ImageIcon(newimg);
+                
+                label.setIcon(icon);
+                board.add(label, i, j);
             }
         }
 

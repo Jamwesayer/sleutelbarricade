@@ -1,0 +1,18 @@
+- Speler associatie naar Veld
+- Associatie weghalen van Spelbord -> Sleutel
+- Game object
+- Veld bevat Enumuratie Barricade, Sleutel, Muur, LoopPad inplaats van de huidige extensie
+- Zelf nieuwe dingen bedenken.
+- Elke week Maandag.
+- Definitief van analyse
+- Design Klassendiagram
+- Volgende week Maandag Design diagram bespreken
+- En ja Zor zag ook kleur verandering in de charmander
+
+//Uitbreiding spel
+- Enemy.
+- Zelf verzinnen.
+- Elke move veranderd de pin van barricades.
+- Mystery tile verandert de zich van de speler.
+- Bepaalde tiles toevoegen die onderweg smelten
+
