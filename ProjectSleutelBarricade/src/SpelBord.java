@@ -3,13 +3,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import models.Coordinaten;
 import models.Veld;
 
@@ -28,6 +29,11 @@ public class SpelBord {
     private final static int WIDTH = 640, HEIGHT = 480;
     private final static int ROWS = 10, COLUMNS = 10;
     
+    //These are for test purpose change it later.
+    private static int playerY = 0;
+    private static int playerX = 0;
+    private static ArrayList<Veld> velden;
+    
     public static void main(String[] args){
         
         // Setting up window
@@ -37,51 +43,18 @@ public class SpelBord {
         frame.setMaximumSize(new Dimension(WIDTH, HEIGHT));
         frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
         
-        //For test purpose
-        Random rand = new Random();
-        
         // Creating and preparing drawable component
         Board board = new Board();
         
         GridLayout grid = new GridLayout(ROWS, COLUMNS);
         board.setLayout(grid);
+        initVeld();
         
-        // Filling up rows and columns
-        for(int i = 0; i < ROWS; i++){
-            for(int j = 0; j < COLUMNS; j++){
-                Coordinaten myCoordinaten = new Coordinaten(i,j);
-                Veld label = new Veld(myCoordinaten);
-                
-                if((i + 1) == ROWS && (j + 1) == COLUMNS){
-                    label.setBevat("EINDPUNT");
-                }
-                else if(i == 0 && j == 0){
-                    label.setBevat("SPELER");
-                }
-                else{
-                    int n = rand.nextInt(50) + 1;
-                    if(n % 2 == 0){
-                        label.setBevat("MUUR");
-                    }
-                    else{
-                        label.setBevat("BARRICADE");
-                    }
-                    
-                }
-                 
-                ImageIcon icon = label.getAfbeelding();
-                
-                Image image = icon.getImage();
-                Image newimg = image.getScaledInstance(65, 50,  java.awt.Image.SCALE_SMOOTH);
-                icon = new ImageIcon(newimg);
-                
-                label.setIcon(icon);
-                //board.add(label, i, j);
-                board.add(label, 
+        for(Veld label : velden){
+                board.add(label,
                           label.getMyCoordinaten().getX(), 
                           label.getMyCoordinaten().getY()
                 );
-            }
         }
 
         board.setBackground(Color.WHITE);
@@ -90,24 +63,64 @@ public class SpelBord {
         frame.add(board);
         frame.pack();
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        frame.setVisible(true); 
         
+        setListener(frame, board);
+        
+    }
+    
+    private static void setListener(JFrame frame, Board board){
         frame.addKeyListener(new KeyListener() {
+            
+            String direction;
+            
             @Override
             public void keyPressed(KeyEvent e) {
                 int code = e.getKeyCode();
                 if(code == KeyEvent.VK_UP){
                     System.out.println("pressed up");
+                    direction = "UP";
+                    if(playerX != 9)playerX++;
                 }
                 if(code == KeyEvent.VK_DOWN){
                     System.out.println("pressed down");
+                    direction = "DOWN";
+                    if(playerX != 0)playerX--;
                 }
                 if(code == KeyEvent.VK_LEFT){
                     System.out.println("pressed left");
+                    direction = "LEFT";
+                    if(playerY != 0)playerY--;
                 }
                 if(code == KeyEvent.VK_RIGHT){
                     System.out.println("pressed right");
+                    direction = "RIGHT";
+                    
+                    if(playerY != 9)playerY++;
                 }
+                
+                for(Veld item : velden){
+                    
+                    if("SPELER".equals(item.getBevat())) item.setBevat("MUUR");
+                    
+                    if(playerY == item.getMyCoordinaten().getY() && playerX == item.getMyCoordinaten().getX()){
+                        item.setBevat("SPELER");
+                        item.moveSpeler(direction);
+                        System.out.println(item.getMyCoordinaten().getY() + " " + item.getMyCoordinaten().getX());
+                    }
+                }    
+                
+                board.removeAll();
+                for(Veld label : velden){
+                        setIcon(label);
+                        board.add(label,
+                                  label.getMyCoordinaten().getX(), 
+                                  label.getMyCoordinaten().getY()
+                        );
+                }
+                
+                board.revalidate();
+                board.repaint();               
             }
             @Override
             public void keyReleased(KeyEvent e) {
@@ -119,8 +132,50 @@ public class SpelBord {
             }
         });
         frame.setFocusable(true);
-        frame.setFocusTraversalKeysEnabled(false);
-        
+        frame.setFocusTraversalKeysEnabled(false);        
     }
     
+    private static void initVeld(){
+        //For test purpose
+        Random rand = new Random();
+        velden = new ArrayList<>();
+        
+        // Filling up rows and columns
+        for(int i = 0; i < ROWS; i++){
+            for(int j = 0; j < COLUMNS; j++){
+                Coordinaten myCoordinaten = new Coordinaten(i,j);
+                Veld label = new Veld(myCoordinaten);
+                
+                if((i + 1) == ROWS && (j + 1) == COLUMNS){
+                    label.setBevat("EINDPUNT");
+                }
+                else if(i == playerY && j == playerX){
+                    label.setBevat("SPELER");
+                }
+                else{
+                    int n = rand.nextInt(50) + 1;
+                    if(n % 2 == 0){
+                        label.setBevat("MUUR");
+                    }
+                    else{
+                        label.setBevat("BARRICADE");
+                    }
+                }
+                 
+                setIcon(label);
+                
+                velden.add(label); 
+            }
+        }
+    }
+    
+    private static void setIcon(Veld label){
+                ImageIcon icon = label.getAfbeelding();
+                
+                Image image = icon.getImage();
+                Image newimg = image.getScaledInstance(65, 50,  java.awt.Image.SCALE_SMOOTH);
+                icon = new ImageIcon(newimg);
+                
+                label.setIcon(icon);
+    }
 }
