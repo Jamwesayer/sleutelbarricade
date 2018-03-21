@@ -66,7 +66,6 @@ public class SpelBord {
         frame.setVisible(true); 
         
         setListener(frame, board);
-        
     }
     
     private static void setListener(JFrame frame, Board board){

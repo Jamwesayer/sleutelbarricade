@@ -71,27 +71,29 @@ public class Veld extends JLabel{
 
     public ImageIcon getAfbeelding() {
         String workingDir = System.getProperty("user.dir");
+        String afbeeldingNaam = "";
         switch(this.bevat){
             case "SPELER":
-                this.afbeelding = new ImageIcon(workingDir + "\\projectImg\\" + "Figure_" + speler.getDirection() + ".png");
+                afbeeldingNaam = "Figure_" + speler.getDirection();
                 break;
             case "MUUR":
-                this.afbeelding = new ImageIcon(workingDir + "\\projectImg\\" + "Muur.png");
+                afbeeldingNaam = "Muur";
                 break;
             case "BARRICADE":
-                this.afbeelding = new ImageIcon(workingDir + "\\projectImg\\" + "Barricade.png");                
+                afbeeldingNaam = "Barricade";
                 break;
             case "SLEUTEL":
-                this.afbeelding = new ImageIcon(workingDir + "\\projectImg\\" + "Sleutel.png");
+                afbeeldingNaam = "Sleutel";
                 break;
             case "EINDPUNT":
-                this.afbeelding = new ImageIcon(workingDir + "\\projectImg\\" + "Eindpunt.png");
+                afbeeldingNaam = "Eindpunt";
                 break;                
             default:
+                afbeeldingNaam = "Barricade_Open";
                 this.afbeelding = new ImageIcon(workingDir + "\\projectImg\\" + "Barricade_Open.png");
                 break;
         }
-        
+        this.afbeelding = new ImageIcon(workingDir + "\\projectImg\\" + afbeeldingNaam + ".png");
         return afbeelding;
     }
 
