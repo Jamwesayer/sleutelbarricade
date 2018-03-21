@@ -5,11 +5,15 @@
  */
 package models;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author J_Administrator
  */
 public class GameObject{
+    
+    private ImageIcon afbeelding;
     
     public GameObject(){
     }

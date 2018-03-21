@@ -11,23 +11,35 @@ package models;
  */
 public class Speler {
     private Sleutel broekzak;
-    
-    public Speler(){
-        
+    private String direction;
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
     
-    public void bewegen(){
+    public Speler(){
+        this.direction = "DOWN";
+    }
+    
+    public void bewegen(String direction){
         //String parameter erbij.
-        setImageDirection();
+        this.direction = direction;
     }
     
     public void sleutelGebruiken(){
         
     }
     
-    //String parameter erbij.
-    public void setImageDirection(){
-        
+    public Sleutel getBroekzak() {
+        return broekzak;
     }
+
+    public void setBroekzak(Sleutel broekzak) {
+        this.broekzak = broekzak;
+    }    
     
 }
