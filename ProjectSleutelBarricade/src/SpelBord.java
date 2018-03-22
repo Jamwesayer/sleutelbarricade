@@ -3,8 +3,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -12,6 +10,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import models.Coordinaten;
+import models.Speler;
 import models.Veld;
 import models.Veld.TYPE;
 
@@ -31,9 +30,8 @@ public class SpelBord {
     private final static int ROWS = 10, COLUMNS = 10;
     
     //These are for test purpose change it later.
-    private static int playerY = 0;
-    private static int playerX = 0;
     private static ArrayList<Veld> velden;
+    private static Speler mySpeler;
     
     public static void main(String[] args){
         
@@ -72,42 +70,64 @@ public class SpelBord {
     private static void setListener(JFrame frame, Board board){
         frame.addKeyListener(new KeyListener() {
             
-            String direction;
+            String direction = mySpeler.getDirection();
+            int playerX;
+            int playerY;
+            Veld old;
             
             @Override
             public void keyPressed(KeyEvent e) {
+                
+                playerX = mySpeler.getX();
+                playerY = mySpeler.getY();
                 int code = e.getKeyCode();
+                boolean outOfZone = false;
                 if(code == KeyEvent.VK_UP){
                     System.out.println("pressed up");
                     direction = "UP";
                     if(playerX != 9)playerX++;
+                    else outOfZone = true;
                 }
                 if(code == KeyEvent.VK_DOWN){
                     System.out.println("pressed down");
                     direction = "DOWN";
                     if(playerX != 0)playerX--;
+                    else outOfZone = true;
                 }
                 if(code == KeyEvent.VK_LEFT){
                     System.out.println("pressed left");
                     direction = "LEFT";
                     if(playerY != 0)playerY--;
+                    else outOfZone = true;
                 }
                 if(code == KeyEvent.VK_RIGHT){
                     System.out.println("pressed right");
                     direction = "RIGHT";
-                    
                     if(playerY != 9)playerY++;
+                    else outOfZone = true;
                 }
                 
                 for(Veld item : velden){
-                    
-                    if("SPELER".equals(item.getBevat())) item.setBevat(TYPE.MUUR);
-                    
-                    if(playerY == item.getMyCoordinaten().getY() && playerX == item.getMyCoordinaten().getX()){
-                        item.setBevat(TYPE.PLAYER);
-                        item.moveSpeler(direction);
-                        System.out.println(item.getMyCoordinaten().getY() + " " + item.getMyCoordinaten().getX());
-                    }
+                    if(item.isThereAPlayer()){
+                        old = item;
+                    }   
+                }
+                
+                for(Veld item : velden){
+                    mySpeler.setDirection(direction);
+                    if(playerY == item.getMyCoordinaten().getY() && playerX == item.getMyCoordinaten().getX() && !outOfZone){
+                        if(item.getBevat() == TYPE.BARRICADE){
+                            old.setSpeler(mySpeler);
+                        }
+                        else{
+                            mySpeler.setX(playerX);
+                            mySpeler.setY(playerY);
+                            item.setSpeler(mySpeler);
+                            old.setSpeler(null);
+                            System.out.println(item.getMyCoordinaten().getY() + " " + item.getMyCoordinaten().getX());
+                            System.out.println(mySpeler.getY() + " " + mySpeler.getX());                            
+                        }
+                    }   
                 }    
                 
                 board.removeAll();
@@ -139,7 +159,7 @@ public class SpelBord {
         //For test purpose
         Random rand = new Random();
         velden = new ArrayList<>();
-        
+        mySpeler = new Speler(0,0);
         // Filling up rows and columns
         for(int i = 0; i < ROWS; i++){
             for(int j = 0; j < COLUMNS; j++){
@@ -149,8 +169,8 @@ public class SpelBord {
                 if((i + 1) == ROWS && (j + 1) == COLUMNS){
                     label.setBevat(TYPE.EINDPUNT);
                 }
-                else if(i == playerY && j == playerX){
-                    label.setBevat(TYPE.PLAYER);
+                else if(i == mySpeler.getY() && j == mySpeler.getX()){
+                    label.setSpeler(mySpeler);
                 }
                 else{
                     int n = rand.nextInt(50) + 1;

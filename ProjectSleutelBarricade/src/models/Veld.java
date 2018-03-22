@@ -5,8 +5,6 @@
  */
 package models;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -21,13 +19,12 @@ public class Veld extends JLabel{
         MUUR,
         BARRICADE,
         SLEUTEL,
-        PLAYER,
         EINDPUNT,
         OTHER
     };
     private TYPE bevat = TYPE.OTHER;
 //    private String bevat;
-    private Speler speler = new Speler();
+    private Speler speler = null;
     private int labelWidth;
     private int labelHeight;
     private ImageIcon afbeelding;
@@ -80,27 +77,29 @@ public class Veld extends JLabel{
 
     public ImageIcon getAfbeelding() {
         String workingDir = System.getProperty("user.dir");
-        String afbeeldingNaam = "";
-        switch(bevat){
-            case PLAYER:
-                afbeeldingNaam = "Figure_" + speler.getDirection();
-                break;
-            case MUUR:
-                afbeeldingNaam = "Muur";
-                break;
-            case BARRICADE:
-                afbeeldingNaam = "Barricade";
-                break;
-            case SLEUTEL:
-                afbeeldingNaam = "Sleutel";
-                break;
-            case EINDPUNT:
-                afbeeldingNaam = "Eindpunt";
-                break;                
-            default:
-                afbeeldingNaam = "Barricade_Open";
-                this.afbeelding = new ImageIcon(workingDir + "\\projectImg\\" + "Barricade_Open.png");
-                break;
+        String afbeeldingNaam;
+        if(this.isThereAPlayer()){
+            afbeeldingNaam = "Figure_" + speler.getDirection();
+        }
+        else{
+            switch(bevat){
+                case MUUR:
+                    afbeeldingNaam = "Muur";
+                    break;
+                case BARRICADE:
+                    afbeeldingNaam = "Barricade";
+                    break;
+                case SLEUTEL:
+                    afbeeldingNaam = "Sleutel";
+                    break;
+                case EINDPUNT:
+                    afbeeldingNaam = "Eindpunt";
+                    break;                
+                default:
+                    afbeeldingNaam = "Barricade_Open";
+                    this.afbeelding = new ImageIcon(workingDir + "\\projectImg\\" + "Barricade_Open.png");
+                    break;
+            }
         }
         this.afbeelding = new ImageIcon(workingDir + "\\projectImg\\" + afbeeldingNaam + ".png");
         return afbeelding;
@@ -108,6 +107,18 @@ public class Veld extends JLabel{
 
     public void setAfbeelding(ImageIcon afbeelding) {
         this.afbeelding = afbeelding;
-    }    
+    }
+
+    public boolean isThereAPlayer(){
+        return this.getSpeler() != null;
+    }
+    
+    public Speler getSpeler() {
+        return speler;
+    }
+
+    public void setSpeler(Speler speler) {
+        this.speler = speler;
+    }
     
 }
