@@ -17,31 +17,40 @@ import javax.swing.JLabel;
 public class Veld extends JLabel{
     private Coordinaten myCoordinaten;
     //private insert enum hier van Muur, Barricade en Sleutel
-    private String bevat;
+    public static enum TYPE {
+        MUUR,
+        BARRICADE,
+        SLEUTEL,
+        PLAYER,
+        EINDPUNT,
+        OTHER
+    };
+    private TYPE bevat = TYPE.OTHER;
+//    private String bevat;
     private Speler speler = new Speler();
     private int labelWidth;
     private int labelHeight;
     private ImageIcon afbeelding;
     
-    public Veld(Coordinaten coordinaten, String bevat){      
+    public Veld(Coordinaten coordinaten, TYPE bevat){      
         this.myCoordinaten = coordinaten;
         this.bevat = bevat;
     }
     
     public Veld(Coordinaten coordinaten){
         this.myCoordinaten = coordinaten;
-        this.bevat = "";
+        this.bevat = TYPE.OTHER;
     }    
     
     public void moveSpeler(String direction){
         speler.setDirection(direction);
     }
     
-    public String getBevat() {
+    public TYPE getBevat() {
         return bevat;
     }
 
-    public void setBevat(String bevat) {
+    public void setBevat(TYPE bevat) {
         this.bevat = bevat;
     }
     
@@ -72,20 +81,20 @@ public class Veld extends JLabel{
     public ImageIcon getAfbeelding() {
         String workingDir = System.getProperty("user.dir");
         String afbeeldingNaam = "";
-        switch(this.bevat){
-            case "SPELER":
+        switch(bevat){
+            case PLAYER:
                 afbeeldingNaam = "Figure_" + speler.getDirection();
                 break;
-            case "MUUR":
+            case MUUR:
                 afbeeldingNaam = "Muur";
                 break;
-            case "BARRICADE":
+            case BARRICADE:
                 afbeeldingNaam = "Barricade";
                 break;
-            case "SLEUTEL":
+            case SLEUTEL:
                 afbeeldingNaam = "Sleutel";
                 break;
-            case "EINDPUNT":
+            case EINDPUNT:
                 afbeeldingNaam = "Eindpunt";
                 break;                
             default:

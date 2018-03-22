@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import models.Coordinaten;
 import models.Veld;
+import models.Veld.TYPE;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -100,10 +101,10 @@ public class SpelBord {
                 
                 for(Veld item : velden){
                     
-                    if("SPELER".equals(item.getBevat())) item.setBevat("MUUR");
+                    if("SPELER".equals(item.getBevat())) item.setBevat(TYPE.MUUR);
                     
                     if(playerY == item.getMyCoordinaten().getY() && playerX == item.getMyCoordinaten().getX()){
-                        item.setBevat("SPELER");
+                        item.setBevat(TYPE.PLAYER);
                         item.moveSpeler(direction);
                         System.out.println(item.getMyCoordinaten().getY() + " " + item.getMyCoordinaten().getX());
                     }
@@ -146,18 +147,18 @@ public class SpelBord {
                 Veld label = new Veld(myCoordinaten);
                 
                 if((i + 1) == ROWS && (j + 1) == COLUMNS){
-                    label.setBevat("EINDPUNT");
+                    label.setBevat(TYPE.EINDPUNT);
                 }
                 else if(i == playerY && j == playerX){
-                    label.setBevat("SPELER");
+                    label.setBevat(TYPE.PLAYER);
                 }
                 else{
                     int n = rand.nextInt(50) + 1;
                     if(n % 2 == 0){
-                        label.setBevat("MUUR");
+                        label.setBevat(TYPE.MUUR);
                     }
                     else{
-                        label.setBevat("BARRICADE");
+                        label.setBevat(TYPE.BARRICADE);
                     }
                 }
                  
