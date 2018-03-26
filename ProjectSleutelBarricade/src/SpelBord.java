@@ -7,9 +7,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.border.Border;
 import models.Coordinaten;
+import models.Sleutel;
 import models.Speler;
 import models.Veld;
 import models.Veld.TYPE;
@@ -34,7 +37,6 @@ public class SpelBord {
     private static Speler mySpeler;
     
     public static void main(String[] args){
-        
         // Setting up window
         JFrame frame = new JFrame("Sleutelbarricade");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,15 +49,18 @@ public class SpelBord {
         
         GridLayout grid = new GridLayout(ROWS, COLUMNS);
         board.setLayout(grid);
-        initVeld();
+        initVeld();      
         
         for(Veld label : velden){
+                if(label.getBevat() == TYPE.OTHER){
+                    Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
+                    label.setBorder(border);
+                }            
                 board.add(label,
                           label.getMyCoordinaten().getX(), 
                           label.getMyCoordinaten().getY()
                 );
         }
-
         board.setBackground(Color.WHITE);
 
         // Adding component to window and pack
@@ -122,9 +127,21 @@ public class SpelBord {
                         else{
                             mySpeler.setX(playerX);
                             mySpeler.setY(playerY);
-                            item.setSpeler(mySpeler);
                             old.setSpeler(null);
-                            System.out.println(item.getMyCoordinaten().getY() + " " + item.getMyCoordinaten().getX());
+                            item.setSpeler(mySpeler);                            
+                            if(mySpeler.getBroekzak() != null){
+                                System.out.println(mySpeler.getBroekzak().getPin());                                
+                            }
+                            else{
+                                if(item.getBevat() == TYPE.SLEUTEL){
+                                    item.setBevat(TYPE.OTHER);
+                                    //Dit is voor test bedoeld moet verbeterd worden.
+                                    mySpeler.setBroekzak(new Sleutel(250));
+                                }                                   
+                            }
+                            if(item.getBevat() == TYPE.EINDPUNT){
+                                System.out.println("GEFELICITEERD!!!");
+                            }
                             System.out.println(mySpeler.getY() + " " + mySpeler.getX());                            
                         }
                     }   
@@ -132,13 +149,16 @@ public class SpelBord {
                 
                 board.removeAll();
                 for(Veld label : velden){
+                        if(label.getBevat() == TYPE.OTHER){
+                            Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
+                            label.setBorder(border);
+                        }
                         setIcon(label);
                         board.add(label,
                                   label.getMyCoordinaten().getX(), 
                                   label.getMyCoordinaten().getY()
                         );
                 }
-                
                 board.revalidate();
                 board.repaint();               
             }
@@ -156,40 +176,53 @@ public class SpelBord {
     }
     
     private static void initVeld(){
-        //For test purpose
+        //Standard Vars to use
         Random rand = new Random();
         velden = new ArrayList<>();
         mySpeler = new Speler(0,0);
+        Object object = null;
+        
         // Filling up rows and columns
         for(int i = 0; i < ROWS; i++){
             for(int j = 0; j < COLUMNS; j++){
                 Coordinaten myCoordinaten = new Coordinaten(i,j);
-                Veld label = new Veld(myCoordinaten);
+                Veld veld = new Veld(myCoordinaten);
                 
                 if((i + 1) == ROWS && (j + 1) == COLUMNS){
-                    label.setBevat(TYPE.EINDPUNT);
+                    veld.setBevat(TYPE.EINDPUNT);
                 }
                 else if(i == mySpeler.getY() && j == mySpeler.getX()){
-                    label.setSpeler(mySpeler);
+                    veld.setSpeler(mySpeler);
+                }
+                else if(i == 4 && j == 4 || i == 0 && j == 9  || i == 6 && j == 6){
+                    veld.setBevat(TYPE.SLEUTEL);
+                    object = new Sleutel(500);
+                    System.out.println(object.getClass());
                 }
                 else{
                     int n = rand.nextInt(50) + 1;
                     if(n % 2 == 0){
-                        label.setBevat(TYPE.MUUR);
+                        veld.setBevat(TYPE.OTHER);
+                    }
+                    else if(n % 3 == 0){
+                        veld.setBevat(TYPE.MUUR);
                     }
                     else{
-                        label.setBevat(TYPE.BARRICADE);
+                        veld.setBevat(TYPE.BARRICADE);
                     }
                 }
-                 
-                setIcon(label);
-                
-                velden.add(label); 
+                veld.setObject(object);
+                setIcon(veld);
+                velden.add(veld); 
             }
         }
     }
     
     private static void setIcon(Veld label){
+        if(label.getBevat() == TYPE.OTHER && !label.isThereAPlayer()){
+            label.setIcon(null);
+        }
+        if(label.getBevat() != TYPE.OTHER || label.isThereAPlayer()){
                 ImageIcon icon = label.getAfbeelding();
                 
                 Image image = icon.getImage();
@@ -197,5 +230,6 @@ public class SpelBord {
                 icon = new ImageIcon(newimg);
                 
                 label.setIcon(icon);
+        }
     }
 }

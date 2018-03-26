@@ -9,8 +9,10 @@ package models;
  *
  * @author J_Administrator
  */
-public class GameObject{
+public abstract class GameObject{
     
     public GameObject(){
     }
+    
+    public abstract void collision();
 }

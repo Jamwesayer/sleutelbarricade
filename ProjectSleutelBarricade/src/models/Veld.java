@@ -28,10 +28,12 @@ public class Veld extends JLabel{
     private int labelWidth;
     private int labelHeight;
     private ImageIcon afbeelding;
+    private Object object;
     
-    public Veld(Coordinaten coordinaten, TYPE bevat){      
+    public Veld(Coordinaten coordinaten, TYPE bevat, String object) throws ClassNotFoundException, InstantiationException, IllegalAccessException{      
         this.myCoordinaten = coordinaten;
         this.bevat = bevat;
+        this.object = Class.forName(object).newInstance();
     }
     
     public Veld(Coordinaten coordinaten){
@@ -41,6 +43,14 @@ public class Veld extends JLabel{
     
     public void moveSpeler(String direction){
         speler.setDirection(direction);
+    }
+    
+    public Object getObject(){
+        return this.object;
+    }
+    
+    public void setObject(Object object){
+        this.object = object;
     }
     
     public TYPE getBevat() {

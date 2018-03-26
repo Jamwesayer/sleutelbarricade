@@ -9,8 +9,14 @@ package models;
  *
  * @author J_Administrator
  */
-public class Muur {
+public class Muur extends GameObject {
     public Muur(){
         System.out.println("ITS A WALL!!!");
     }
+
+    @Override
+    public void collision() {
+        System.out.println("DON'T WALK INTO THE DAMN WALLS!");
+    }
+    
 }
