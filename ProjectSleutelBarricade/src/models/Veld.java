@@ -14,7 +14,7 @@ import javax.swing.JLabel;
  */
 public class Veld extends JLabel{
     private Coordinaten myCoordinaten;
-    //private insert enum hier van Muur, Barricade en Sleutel
+    //Soorten type die het veld kan bevatten
     public static enum TYPE {
         MUUR,
         BARRICADE,
@@ -23,7 +23,6 @@ public class Veld extends JLabel{
         OTHER
     };
     private TYPE bevat = TYPE.OTHER;
-//    private String bevat;
     private Speler speler = null;
     private int labelWidth;
     private int labelHeight;
@@ -87,6 +86,8 @@ public class Veld extends JLabel{
 
     public ImageIcon getAfbeelding() {
         String workingDir = System.getProperty("user.dir");
+        //Fix the problem with MAC OS
+        if("MAC OS X".equals(System.getProperty("os.name"))) workingDir = System.getProperty("user.home");
         String afbeeldingNaam;
         if(this.isThereAPlayer()){
             afbeeldingNaam = "Figure_" + speler.getDirection();

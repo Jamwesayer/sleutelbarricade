@@ -1,16 +1,22 @@
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import java.util.ArrayList;
 import java.util.Random;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.border.Border;
+
 import models.Coordinaten;
 import models.Sleutel;
 import models.Speler;
@@ -36,6 +42,7 @@ public class SpelBord {
     private static ArrayList<Veld> velden;
     private static Speler mySpeler;
     
+    //Main Method
     public static void main(String[] args){
         // Setting up window
         JFrame frame = new JFrame("Sleutelbarricade");
@@ -44,18 +51,29 @@ public class SpelBord {
         frame.setMaximumSize(new Dimension(WIDTH, HEIGHT));
         frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
         
-        // Creating and preparing drawable component
+        // Creating and preparing panel
         Board board = new Board();
         
+        //Prepare GridLayout
         GridLayout grid = new GridLayout(ROWS, COLUMNS);
         board.setLayout(grid);
-        initVeld();      
+        initVeld();  
         
+        //Fill the panel
         for(Veld label : velden){
                 if(label.getBevat() == TYPE.OTHER){
                     Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
                     label.setBorder(border);
-                }            
+                }
+                if(label.getBevat() == TYPE.SLEUTEL){
+                    label.setLayout(new FlowLayout(FlowLayout.CENTER));
+                    //No static number, later randomize better
+                    JLabel l = new JLabel("200");
+                    l.setForeground(Color.red);
+                    l.setFont(new Font("Serif", Font.BOLD, 20));
+                    label.add(l);
+                }
+                //Add to the panel
                 board.add(label,
                           label.getMyCoordinaten().getX(), 
                           label.getMyCoordinaten().getY()
@@ -63,7 +81,7 @@ public class SpelBord {
         }
         board.setBackground(Color.WHITE);
 
-        // Adding component to window and pack
+        // Adding JPanel to the JFrame
         frame.add(board);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -72,9 +90,11 @@ public class SpelBord {
         setListener(frame, board);
     }
     
+    //Initialize the listener for keys inputs
     private static void setListener(JFrame frame, Board board){
         frame.addKeyListener(new KeyListener() {
             
+            //Variables
             String direction = mySpeler.getDirection();
             int playerX;
             int playerY;
@@ -175,6 +195,7 @@ public class SpelBord {
         frame.setFocusTraversalKeysEnabled(false);        
     }
     
+    //Maakt de veld in een ArrayList
     private static void initVeld(){
         //Standard Vars to use
         Random rand = new Random();
@@ -188,17 +209,22 @@ public class SpelBord {
                 Coordinaten myCoordinaten = new Coordinaten(i,j);
                 Veld veld = new Veld(myCoordinaten);
                 
+                //Eindpunt
                 if((i + 1) == ROWS && (j + 1) == COLUMNS){
                     veld.setBevat(TYPE.EINDPUNT);
                 }
+                //Speler Positie
                 else if(i == mySpeler.getY() && j == mySpeler.getX()){
                     veld.setSpeler(mySpeler);
                 }
+                //Sleutel Posities
                 else if(i == 4 && j == 4 || i == 0 && j == 9  || i == 6 && j == 6){
                     veld.setBevat(TYPE.SLEUTEL);
+                    //Experiment                    
                     object = new Sleutel(500);
                     System.out.println(object.getClass());
                 }
+                //Randomizer voor MUUR, LOOPVELD, BARRICADE
                 else{
                     int n = rand.nextInt(50) + 1;
                     if(n % 2 == 0){
@@ -218,6 +244,7 @@ public class SpelBord {
         }
     }
     
+    //Set the icon for the fields
     private static void setIcon(Veld label){
         if(label.getBevat() == TYPE.OTHER && !label.isThereAPlayer()){
             label.setIcon(null);
