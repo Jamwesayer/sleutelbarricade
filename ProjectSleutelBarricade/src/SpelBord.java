@@ -40,7 +40,8 @@ public class SpelBord {
     private final static int ROWS = 10, COLUMNS = 10;
     
     //These are for test purpose change it later.
-    private static ArrayList<Veld> velden = new ArrayList<>();
+//    private static ArrayList<Veld> velden = new ArrayList<>();
+    private static Veld[][] velden = new Veld[ROWS][COLUMNS];
     private static Speler mySpeler;
     
     //Main Method
@@ -61,7 +62,9 @@ public class SpelBord {
         initVeld();  
         
         //Fill the panel
-        for(Veld veld : velden){
+        for(int i = 0; i < ROWS; i++){
+            for(int j = 0; j < COLUMNS; j++){
+                Veld veld = velden[i][j];
                 Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
                 veld.setBorder(border);
                 if(veld instanceof Sleutel){
@@ -77,6 +80,7 @@ public class SpelBord {
                           veld.getMyCoordinaten().getX(), 
                           veld.getMyCoordinaten().getY()
                 );
+            }
         }
         board.setBackground(Color.WHITE);
 
@@ -133,34 +137,24 @@ public class SpelBord {
                         break;
                 }
                 
-                Veld oldVeld = null;
-                
-                for(Veld veld : velden){
-                    if(veld.getMyCoordinaten().getX() == oldPlayerX &&
-                            veld.getMyCoordinaten().getY() == oldPlayerY){
-                        oldVeld = veld;
-                    }
-                    
-                }
-                
-                for(Veld veld : velden){
-                    if(veld.getMyCoordinaten().getX() == playerX &&
-                            veld.getMyCoordinaten().getY() == playerY){
-                        if(veld instanceof Muur)return;
-                        if(veld instanceof Barricade)return;
+                Veld oldVeld = velden[oldPlayerX][oldPlayerY];
+                Veld newVeld = velden[playerX][playerY];
 
-                            mySpeler.getMyCoordinaten().setX(playerX);
-                            mySpeler.getMyCoordinaten().setY(playerY);
-                            mySpeler.setDirection(direction);
-                            
-                            oldVeld.setSpeler(null);
-                            veld.setSpeler(mySpeler);
-     
-                    }
-                }
+                if(newVeld instanceof Muur)return;
+                if(newVeld instanceof Barricade)return;
+
+                mySpeler.getMyCoordinaten().setX(playerX);
+                mySpeler.getMyCoordinaten().setY(playerY);
+                mySpeler.setDirection(direction);
+
+                oldVeld.setSpeler(null);
+                newVeld.setSpeler(mySpeler);
                 
                 board.removeAll();
-                for(Veld veld : velden){
+                //Fill the panel
+                for(int i = 0; i < ROWS; i++){
+                    for(int j = 0; j < COLUMNS; j++){
+                        Veld veld = velden[i][j];
                         if(!(veld instanceof Muur) && !(veld instanceof Eindpunt) && !(veld instanceof Barricade) && !(veld instanceof Sleutel) && !(veld instanceof Speler)){
                             Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
                             veld.setBorder(border);
@@ -170,6 +164,7 @@ public class SpelBord {
                                   veld.getMyCoordinaten().getX(), 
                                   veld.getMyCoordinaten().getY()
                         );
+                    }
                 }
                 board.revalidate();
                 board.repaint();               
@@ -226,7 +221,7 @@ public class SpelBord {
                     }
                 }
                 setIcon(veld);
-                velden.add(veld);
+                velden[i][j] = veld;
             }
         }
 
