@@ -5,15 +5,19 @@
  */
 package models;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author J_Administrator
  */
 public class Muur extends GameObject {
-    public Muur(){
-        System.out.println("ITS A WALL!!!");
-    }
 
+    public Muur(Coordinaten coordinaten) {
+        super(coordinaten);
+        setAfbeelding(new ImageIcon(getWorkingDir() + "\\projectImg\\" + "Muur.png"));
+    }
+    
     @Override
     public void collision() {
         System.out.println("DON'T WALK INTO THE DAMN WALLS!");

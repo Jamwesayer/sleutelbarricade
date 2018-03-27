@@ -5,43 +5,28 @@
  */
 package models;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author J_Administrator
  */
-public class Speler {
+public class Speler extends Veld implements KeyListener {
     private Sleutel broekzak;
     private String direction;
-    private int x;
-    private int y;
 
-    public Speler(int x, int y){
-        this.x = x;
-        this.y = y;
-        this.direction = "DOWN";        
+    public Speler(Coordinaten coordinaten){
+        super(coordinaten);
+        this.direction = "DOWN";
+        setAfbeelding(new ImageIcon(getWorkingDir() + "\\projectImg\\" + "Figure_Down.png"));
     }
     
-    public Speler(){
-        this.x = 0;
-        this.y = 0;
-        this.direction = "DOWN";        
-    }
-    
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
+//    public Speler(){
+//        setMyCoordinaten(new Coordinaten(0, 0));
+//        this.direction = "DOWN";        
+//    }
 
     public String getDirection() {
         return direction;
@@ -66,6 +51,44 @@ public class Speler {
 
     public void setBroekzak(Sleutel broekzak) {
         this.broekzak = broekzak;
+    }
+
+    public void moveSpeler(String direction){
+        setDirection(direction);
     }    
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int code = e.getKeyCode();
+        switch(code){
+            case KeyEvent.VK_UP:
+                System.out.println("pressed up");
+                direction = "UP";
+                if(getMyCoordinaten().getY() != 9)getMyCoordinaten().setY(getMyCoordinaten().getY() + 1);
+                break;
+            case KeyEvent.VK_DOWN:
+                System.out.println("pressed down");
+                direction = "DOWN";
+                if(getMyCoordinaten().getY() != 0)getMyCoordinaten().setY(getMyCoordinaten().getY() - 1);
+                break;
+            case KeyEvent.VK_LEFT:
+                System.out.println("pressed left");
+                direction = "LEFT";
+                if(getMyCoordinaten().getX() != 0)getMyCoordinaten().setX(getMyCoordinaten().getX() - 1);
+                break;
+            case KeyEvent.VK_RIGHT:
+                System.out.println("pressed right");
+                direction = "RIGHT";
+                if(getMyCoordinaten().getX() != 9)getMyCoordinaten().setX(getMyCoordinaten().getY() + 1);
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
     
 }

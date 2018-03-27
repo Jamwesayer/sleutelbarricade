@@ -5,17 +5,21 @@
  */
 package models;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author J_Administrator
  */
-public class Barricade {
+public class Barricade extends GameObject {
     private int pin;
     private boolean isOpen;
     
-    public Barricade(int pin){
+    public Barricade(Coordinaten coordinaten, int pin){
+        super(coordinaten);
         this.pin = pin;
         this.isOpen = false;
+        setAfbeelding(new ImageIcon(getWorkingDir() + "\\projectImg\\" + "Barricade.png"));
     }
     
     public void openBarricade(){
@@ -38,5 +42,10 @@ public class Barricade {
     public void setIsOpen(boolean isOpen) {
         this.isOpen = isOpen;
     }    
+
+    @Override
+    public void collision() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

@@ -9,9 +9,10 @@ package models;
  *
  * @author J_Administrator
  */
-public abstract class GameObject{
+public abstract class GameObject extends Veld{
     
-    public GameObject(){
+    public GameObject(Coordinaten coordinaten){
+        super(coordinaten);
     }
     
     public abstract void collision();

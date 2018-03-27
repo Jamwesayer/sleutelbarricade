@@ -5,17 +5,21 @@
  */
 package models;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author J_Administrator
  */
-public class Sleutel {
+public class Sleutel extends GameObject {
     private int pin;
     private boolean opgepakt;
     
-    public Sleutel(int pin){
+    public Sleutel(Coordinaten coordinaten, int pin){
+        super(coordinaten);
         this.pin = pin;
         this.opgepakt = false;
+        setAfbeelding(new ImageIcon(getWorkingDir() + "\\projectImg\\" + "Sleutel.png"));
     }
     
     public void verdwijn(){
@@ -37,5 +41,10 @@ public class Sleutel {
     public void setOpgepakt(boolean opgepakt) {
         this.opgepakt = opgepakt;
     }    
+
+    @Override
+    public void collision() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
