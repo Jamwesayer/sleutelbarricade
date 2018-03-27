@@ -15,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.Border;
 import models.*;
 
@@ -52,7 +53,7 @@ public class SpelBord {
         frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
         
         // Creating and preparing panel
-        Board board = new Board();
+        JPanel board = new JPanel();
         
         //Prepare GridLayout
         GridLayout grid = new GridLayout(ROWS, COLUMNS);
@@ -89,7 +90,7 @@ public class SpelBord {
     }
     
     //Initialize the listener for keys inputs
-    private static void setListener(JFrame frame, Board board){
+    private static void setListener(JFrame frame, JPanel board){
 //        frame.addKeyListener(mySpeler);
         frame.addKeyListener(new KeyListener() {
             
@@ -109,7 +110,6 @@ public class SpelBord {
                 int oldPlayerY = playerY;
                 
                 int code = e.getKeyCode();
-                boolean outOfZone = false;
                 switch(code){
                     case KeyEvent.VK_UP:
                         System.out.println("pressed up");
@@ -133,72 +133,35 @@ public class SpelBord {
                         break;
                 }
                 
+                Veld oldVeld = null;
+                
+                for(Veld veld : velden){
+                    if(veld.getMyCoordinaten().getX() == oldPlayerX &&
+                            veld.getMyCoordinaten().getY() == oldPlayerY){
+                        oldVeld = veld;
+                    }
+                    
+                }
+                
                 for(Veld veld : velden){
                     if(veld.getMyCoordinaten().getX() == playerX &&
                             veld.getMyCoordinaten().getY() == playerY){
-//                        if(veld instanceof Muur)return;
-//                        if(veld instanceof Barricade)return;
+                        if(veld instanceof Muur)return;
+                        if(veld instanceof Barricade)return;
 
                             mySpeler.getMyCoordinaten().setX(playerX);
                             mySpeler.getMyCoordinaten().setY(playerY);
+                            mySpeler.setDirection(direction);
+                            
+                            oldVeld.setSpeler(null);
+                            veld.setSpeler(mySpeler);
      
                     }
                 }
                 
-                
-                
-//                for(Veld veld : velden){
-//                    
-//                    if(veld instanceof Speler){
-//                        oldVeld = veld;
-//                        veld.getMyCoordinaten().setX(playerX);
-//                        veld.getMyCoordinaten().setY(playerY);
-//                            
-//                            
-//                            
-//                            if(mySpeler.getBroekzak() != null){
-//                                System.out.println(mySpeler.getBroekzak().getPin());                                
-//                            }
-//                            else{
-//                                if(veld instanceof Sleutel){
-//                                    mySpeler.setBroekzak((Sleutel)veld);
-//                                    veld = new Veld(new Coordinaten(playerX, playerY));
-//                                    //Dit is voor test bedoeld moet verbeterd worden.
-//                                }                                   
-//                            }
-//                            if(veld instanceof Eindpunt){
-//                                System.out.println("GEFELICITEERD!!!");
-//                            }
-//                    }
-////                    if(playerY == veld.getMyCoordinaten().getY() && playerX == veld.getMyCoordinaten().getX() && !outOfZone){
-////                        if(veld instanceof Barricade){
-//////                            old.setSpeler(mySpeler);
-////                        }
-////                        else{
-////                            mySpeler.getMyCoordinaten().setX(playerX);
-////                            mySpeler.getMyCoordinaten().setY(playerY);
-//////                            old.setSpeler(null);
-////                            veld = mySpeler;   
-////                            if(mySpeler.getBroekzak() != null){
-////                                System.out.println(mySpeler.getBroekzak().getPin());                                
-////                            }
-////                            else{
-////                                if(veld instanceof Sleutel){
-////                                    mySpeler.setBroekzak((Sleutel)veld);
-////                                    veld = new Veld(new Coordinaten(playerX, playerY));
-////                                    //Dit is voor test bedoeld moet verbeterd worden.
-////                                }                                   
-////                            }
-////                            if(veld instanceof Eindpunt){
-////                                System.out.println("GEFELICITEERD!!!");
-////                            }
-////                            System.out.println(mySpeler.getY() + " " + mySpeler.getX());                            
-////                        }
-////                    }   
-//                }    
                 board.removeAll();
                 for(Veld veld : velden){
-                        if(veld instanceof Muur){
+                        if(!(veld instanceof Muur) && !(veld instanceof Eindpunt) && !(veld instanceof Barricade) && !(veld instanceof Sleutel) && !(veld instanceof Speler)){
                             Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
                             veld.setBorder(border);
                         }
@@ -243,7 +206,7 @@ public class SpelBord {
                 }
 //                Speler Positie
                 else if(i == mySpeler.getY() && j == mySpeler.getX()){
-                    veld = mySpeler;
+                    veld.setSpeler(mySpeler);
                 }
                 //Sleutel Posities
                 else if(i == 4 && j == 4 || i == 0 && j == 9  || i == 6 && j == 6){
@@ -271,7 +234,10 @@ public class SpelBord {
     
     //Set the icon for the fields
     private static void setIcon(Veld veld){
-        if(veld.getAfbeelding() == null)return;
+        if(veld.getAfbeelding() == null){
+            veld.setIcon(null);
+            return;
+        }
         ImageIcon icon = veld.getAfbeelding();
 
         Image image = icon.getImage();

@@ -18,6 +18,7 @@ public class Veld extends JLabel{
     private int labelWidth;
     private int labelHeight;
     private ImageIcon afbeelding;
+    private Speler speler;
     
     private String workingDir = System.getProperty("user.dir");
     
@@ -52,6 +53,9 @@ public class Veld extends JLabel{
     }
 
     public ImageIcon getAfbeelding() {
+        if(speler != null){
+            return speler.getAfbeelding();
+        }
         return afbeelding;
     }
 
@@ -62,5 +66,13 @@ public class Veld extends JLabel{
     public String getWorkingDir() {
         return workingDir;
     } 
+    
+    public Speler getSpeler() {
+        return speler;
+    }
+
+    public void setSpeler(Speler speler) {
+        this.speler = speler;
+    }
         
 }

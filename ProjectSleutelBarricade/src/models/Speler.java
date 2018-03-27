@@ -22,11 +22,6 @@ public class Speler extends Veld implements KeyListener {
         this.direction = "DOWN";
         setAfbeelding(new ImageIcon(getWorkingDir() + "\\projectImg\\" + "Figure_Down.png"));
     }
-    
-//    public Speler(){
-//        setMyCoordinaten(new Coordinaten(0, 0));
-//        this.direction = "DOWN";        
-//    }
 
     public String getDirection() {
         return direction;
@@ -34,6 +29,7 @@ public class Speler extends Veld implements KeyListener {
 
     public void setDirection(String direction) {
         this.direction = direction;
+        setAfbeelding(new ImageIcon(getWorkingDir() + "\\projectImg\\" + "Figure_"+direction+".png"));
     }
     
     public void bewegen(String direction){
