@@ -19,7 +19,7 @@ public class Muur extends GameObject {
     }
     
     @Override
-    public void collision() {
+    public void collision(Speler speler) {
         System.out.println("DON'T WALK INTO THE DAMN WALLS!");
     }
     

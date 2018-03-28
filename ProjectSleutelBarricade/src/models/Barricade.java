@@ -24,7 +24,7 @@ public class Barricade extends GameObject {
     
     public void openBarricade(){
         this.isOpen = true;
-        System.out.println("ACCES GRAAAAANTED!");
+        setAfbeelding(new ImageIcon(getWorkingDir() + "\\projectImg\\" + "Barricade_Open.png"));
     }
     
     public int getPin() {
@@ -44,8 +44,12 @@ public class Barricade extends GameObject {
     }    
 
     @Override
-    public void collision() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void collision(Speler speler) {
+        if(this.isOpen)return;
+        if(speler.getBroekzak() != null && speler.getBroekzak().getPin() == pin){
+            openBarricade();
+        }
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

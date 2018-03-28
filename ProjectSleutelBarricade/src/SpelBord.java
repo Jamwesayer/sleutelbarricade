@@ -67,10 +67,10 @@ public class SpelBord {
                 Veld veld = velden[i][j];
                 Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
                 veld.setBorder(border);
-                if(veld instanceof Sleutel){
+                if(veld instanceof Sleutel || veld instanceof Barricade){
                     veld.setLayout(new FlowLayout(FlowLayout.CENTER));
                     //No static number, later randomize better
-                    JLabel l = new JLabel("200");
+                    JLabel l = new JLabel((veld instanceof Sleutel) ? String.valueOf(((Sleutel) veld).getPin()) : String.valueOf(((Barricade) veld).getPin()));
                     l.setForeground(Color.red);
                     l.setFont(new Font("Serif", Font.BOLD, 20));
                     veld.add(l);
@@ -139,9 +139,14 @@ public class SpelBord {
                 
                 Veld oldVeld = velden[oldPlayerX][oldPlayerY];
                 Veld newVeld = velden[playerX][playerY];
+                
+                if(newVeld instanceof GameObject){
+                    GameObject gameObject = (GameObject)newVeld;
+                    gameObject.collision(mySpeler);
+                }
 
-                if(newVeld instanceof Muur)return;
-                if(newVeld instanceof Barricade)return;
+//                if(newVeld instanceof Muur)return;
+                if(newVeld instanceof Barricade && !((Barricade)newVeld).isIsOpen())return;
 
                 mySpeler.getMyCoordinaten().setX(playerX);
                 mySpeler.getMyCoordinaten().setY(playerY);
@@ -149,13 +154,13 @@ public class SpelBord {
 
                 oldVeld.setSpeler(null);
                 newVeld.setSpeler(mySpeler);
-                
+                                
                 board.removeAll();
                 //Fill the panel
                 for(int i = 0; i < ROWS; i++){
                     for(int j = 0; j < COLUMNS; j++){
                         Veld veld = velden[i][j];
-                        if(!(veld instanceof Muur) && !(veld instanceof Eindpunt) && !(veld instanceof Barricade) && !(veld instanceof Sleutel) && !(veld instanceof Speler)){
+                        if(!(veld instanceof GameObject) && !(veld instanceof Speler)){
                             Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
                             veld.setBorder(border);
                         }
@@ -188,16 +193,20 @@ public class SpelBord {
         Random rand = new Random();
         mySpeler = new Speler(new Coordinaten(0, 0));
 
+        ArrayList<Integer> codes = new ArrayList();
+        for(int i = 0; i < 4; i++){
+            codes.add(rand.nextInt(9999));
+        }
         
         // Filling up rows and columns
         for(int i = 0; i < ROWS; i++){
             for(int j = 0; j < COLUMNS; j++){
-                Coordinaten myCoordinaten = new Coordinaten(i,j);
-                Veld veld = new Veld(myCoordinaten);
+                Coordinaten coordinaten = new Coordinaten(i,j);
+                Veld veld = new Veld(coordinaten);
                 
                 //Eindpunt
                 if((i + 1) == ROWS && (j + 1) == COLUMNS){
-                    veld = new Eindpunt(myCoordinaten);
+                    veld = new Eindpunt(coordinaten);
                 }
 //                Speler Positie
                 else if(i == mySpeler.getY() && j == mySpeler.getX()){
@@ -205,7 +214,7 @@ public class SpelBord {
                 }
                 //Sleutel Posities
                 else if(i == 4 && j == 4 || i == 0 && j == 9  || i == 6 && j == 6){
-                    veld = new Sleutel(myCoordinaten, 500);
+                    veld = new Sleutel(coordinaten, codes.get(rand.nextInt(4)));
                     //Experiment                    
 //                    object = new Sleutel(500);
 //                    System.out.println(object.getClass());
@@ -214,10 +223,10 @@ public class SpelBord {
                 else{
                     int n = rand.nextInt(50) + 1;
                     if(n % 3 == 0){
-                        veld = new Muur(myCoordinaten);
+                        veld = new Muur(coordinaten);
                     }
                     else if(n % 2 != 0){
-                        veld = new Barricade(myCoordinaten, 1234);
+                        veld = new Barricade(coordinaten, codes.get(rand.nextInt(4)));
                     }
                 }
                 setIcon(veld);

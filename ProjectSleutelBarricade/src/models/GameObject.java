@@ -15,5 +15,5 @@ public abstract class GameObject extends Veld{
         super(coordinaten);
     }
     
-    public abstract void collision();
+    public abstract void collision(Speler speler);
 }

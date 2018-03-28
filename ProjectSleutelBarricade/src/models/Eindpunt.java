@@ -2,6 +2,7 @@
 import javax.swing.ImageIcon;
 import models.Coordinaten;
 import models.GameObject;
+import models.Speler;
 
 
 /*
@@ -22,8 +23,9 @@ public class Eindpunt extends GameObject {
     }
 
     @Override
-    public void collision() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void collision(Speler speler) {
+        System.out.println("GEWONNEN");
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
