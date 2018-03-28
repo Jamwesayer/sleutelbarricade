@@ -145,7 +145,14 @@ public class SpelBord {
                     gameObject.collision(mySpeler);
                 }
 
-//                if(newVeld instanceof Muur)return;
+                if(newVeld instanceof Sleutel){
+                    Coordinaten coordinaten = new Coordinaten(playerX,playerY);
+                    Veld veldfdsa = new Veld(coordinaten);
+                    velden[playerX][playerY] = veldfdsa;
+                    newVeld = velden[playerX][playerY];                    
+                }
+                
+//              if(newVeld instanceof Muur)return;
                 if(newVeld instanceof Barricade && !((Barricade)newVeld).isIsOpen())return;
 
                 mySpeler.getMyCoordinaten().setX(playerX);
@@ -163,7 +170,7 @@ public class SpelBord {
                         if(!(veld instanceof GameObject) && !(veld instanceof Speler)){
                             Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
                             veld.setBorder(border);
-                        }
+                        }                     
                         setIcon(veld);
                         board.add(veld,
                                   veld.getMyCoordinaten().getX(), 
@@ -187,7 +194,7 @@ public class SpelBord {
         frame.setFocusTraversalKeysEnabled(false);        
     }
     
-    //Maakt de veld in een ArrayList
+    //Maakt de veld in een de array veld
     private static void initVeld(){
         //Standard Vars to use
         Random rand = new Random();
