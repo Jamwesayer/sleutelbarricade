@@ -1,9 +1,8 @@
+package models;
 
+import game.SpelBord;
 import javax.swing.ImageIcon;
-import models.Coordinaten;
-import models.GameObject;
-import models.Speler;
-
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,8 +23,7 @@ public class Eindpunt extends GameObject {
 
     @Override
     public void collision(Speler speler) {
-        System.out.println("GEWONNEN");
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        JOptionPane.showMessageDialog(SpelBord.getFrame(), "Je hebt gewonnen!");
     }
     
 }

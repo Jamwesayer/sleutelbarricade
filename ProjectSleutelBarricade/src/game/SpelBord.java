@@ -1,3 +1,6 @@
+package game;
+
+
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -43,18 +46,20 @@ public class SpelBord {
 //    private static ArrayList<Veld> velden = new ArrayList<>();
     private static Veld[][] velden = new Veld[ROWS][COLUMNS];
     private static Speler mySpeler;
+    private static JPanel board;
+    private static JFrame frame;
     
     //Main Method
     public static void main(String[] args){
         // Setting up window
-        JFrame frame = new JFrame("Sleutelbarricade");
+        frame = new JFrame("Sleutelbarricade");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         frame.setMaximumSize(new Dimension(WIDTH, HEIGHT));
         frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
         
         // Creating and preparing panel
-        JPanel board = new JPanel();
+        board = new JPanel();
         
         //Prepare GridLayout
         GridLayout grid = new GridLayout(ROWS, COLUMNS);
@@ -244,7 +249,7 @@ public class SpelBord {
     }
     
     //Set the icon for the fields
-    private static void setIcon(Veld veld){
+    public static void setIcon(Veld veld){
         if(veld.getAfbeelding() == null){
             veld.setIcon(null);
             return;
@@ -256,4 +261,25 @@ public class SpelBord {
         icon = new ImageIcon(newimg);
         veld.setIcon(icon);
     }
+
+    public static JFrame getFrame() {
+        return frame;
+    }
+
+    public static Veld[][] getVelden() {
+        return velden;
+    }
+
+    public static JPanel getBoard() {
+        return board;
+    }
+
+    public static int getCOLUMNS() {
+        return COLUMNS;
+    }
+
+    public static int getROWS() {
+        return ROWS;
+    }
+    
 }

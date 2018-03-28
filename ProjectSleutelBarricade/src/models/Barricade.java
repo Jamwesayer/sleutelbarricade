@@ -5,7 +5,9 @@
  */
 package models;
 
+import game.SpelBord;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -46,8 +48,10 @@ public class Barricade extends GameObject {
     @Override
     public void collision(Speler speler) {
         if(this.isOpen)return;
-        if(speler.getBroekzak() != null && speler.getBroekzak().getPin() == pin){
-            openBarricade();
+        if(speler.getBroekzak() != null){
+            if(speler.getBroekzak().getPin() == pin)
+                openBarricade();
+            else JOptionPane.showMessageDialog(SpelBord.getFrame(), "De sleutel heeft niet de zelfde pin");
         }
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
