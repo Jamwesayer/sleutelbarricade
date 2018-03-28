@@ -105,7 +105,7 @@ public class Speler extends Veld implements KeyListener {
             newVeld = SpelBord.getVelden()[playerX][playerY];                    
         }
 
-//              if(newVeld instanceof Muur)return;
+        if(newVeld instanceof Muur)return;
         if(newVeld instanceof Barricade && !((Barricade)newVeld).isIsOpen())return;
 
         getMyCoordinaten().setX(playerX);
