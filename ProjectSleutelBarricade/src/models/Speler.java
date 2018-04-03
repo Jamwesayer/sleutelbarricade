@@ -9,6 +9,7 @@ import game.SpelBord;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.border.Border;
@@ -20,6 +21,7 @@ import javax.swing.border.Border;
 public class Speler extends Veld implements KeyListener {
     private Sleutel broekzak;
     private String direction;
+    private Random random = new Random();
 
     public Speler(Coordinaten coordinaten){
         super(coordinaten);
@@ -65,6 +67,8 @@ public class Speler extends Veld implements KeyListener {
 
         int oldPlayerX = playerX;
         int oldPlayerY = playerY;
+        
+        boolean outOfZone = false;
 
         int code = e.getKeyCode();
         switch(code){
@@ -72,21 +76,25 @@ public class Speler extends Veld implements KeyListener {
                 System.out.println("pressed up");
                 direction = "UP";
                 if(playerX < 9)playerX++;
+                else outOfZone = true;
                 break;
             case KeyEvent.VK_DOWN:
                 System.out.println("pressed down");
                 direction = "DOWN";
                 if(playerX > 0)playerX--;
+                else outOfZone = true;
                 break;
             case KeyEvent.VK_LEFT:
                 System.out.println("pressed left");
                 direction = "LEFT";
                 if(playerY > 0)playerY--;
+                else outOfZone = true;
                 break;
             case KeyEvent.VK_RIGHT:
                 System.out.println("pressed right");
                 direction = "RIGHT";
                 if(playerY < 9)playerY++;
+                else outOfZone = true;
                 break;
         }
 
@@ -105,13 +113,13 @@ public class Speler extends Veld implements KeyListener {
             newVeld = SpelBord.getVelden()[playerX][playerY];                    
         }
 
-        if(newVeld instanceof Muur)return;
+        if(outOfZone || newVeld instanceof Muur)return;
         if(newVeld instanceof Barricade && !((Barricade)newVeld).isIsOpen())return;
 
         getMyCoordinaten().setX(playerX);
         getMyCoordinaten().setY(playerY);
         setDirection(direction);
-
+        
         oldVeld.setSpeler(null);
         newVeld.setSpeler(this);
 
@@ -132,7 +140,10 @@ public class Speler extends Veld implements KeyListener {
             }
         }
         SpelBord.getBoard().revalidate();
-        SpelBord.getBoard().repaint();               
+        SpelBord.getBoard().repaint();   
+        
+        if(random.nextInt(5) == 1)
+            SpelBord.setupField();
     }
     @Override
     public void keyReleased(KeyEvent e) {

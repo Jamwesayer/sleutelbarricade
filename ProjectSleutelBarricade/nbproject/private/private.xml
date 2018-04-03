@@ -3,13 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/models/Barricade.java</file>
-            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/models/Coordinaten.java</file>
-            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/models/Sleutel.java</file>
-            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/SpelBord.java</file>
-            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/models/Veld.java</file>
-            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/models/Speler.java</file>
-            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/models/Eindpunt.java</file>
+            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/game/SpelBord.java</file>
+            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/models/Eindpunt.java</file>
+            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/models/Veld.java</file>
+            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/models/Sleutel.java</file>
+            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/models/Muur.java</file>
+            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/models/Barricade.java</file>
+            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/models/Coordinaten.java</file>
+            <file>file:/C:/Users/James/Desktop/sleutelbarricade/sleutelbarricade/sleutelbarricade/ProjectSleutelBarricade/src/models/GameObject.java</file>
         </group>
     </open-files>
 </project-private>
