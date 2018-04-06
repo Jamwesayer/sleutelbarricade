@@ -29,23 +29,17 @@ import models.Sleutel;
 import models.Speler;
 import models.Veld;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Version: 1.0
+ * Made by: James Bal, Jeffrey Lo-A-Foe, Burak Ergin
  */
 
-/**
- *
- * @author James
- */
 public class SpelBord {
     
     private final static int WIDTH = 640, HEIGHT = 480;
     private final static int ROWS = 10, COLUMNS = 10;
     
-    //These are for test purpose change it later.
-//    private static ArrayList<Veld> velden = new ArrayList<>();
+    // 2D array to keep track of fields
     private static Veld[][] velden = new Veld[ROWS][COLUMNS];
     private static Speler mySpeler;
     private static JPanel board;
@@ -56,6 +50,7 @@ public class SpelBord {
     
     //Main Method
     public static void main(String[] args){
+        
         // Setting up window
         frame = new JFrame("Sleutelbarricade");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,8 +58,13 @@ public class SpelBord {
         frame.setMaximumSize(new Dimension(WIDTH, HEIGHT));
         frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
         
-        // Creating and preparing panel
+        // Creating and preparing panel for game
         board = new JPanel();
+        GridLayout grid = new GridLayout(ROWS, COLUMNS);
+        board.setLayout(grid);
+        board.setBackground(Color.WHITE);
+        
+        // Creating panel for topbar containing timer and restart button
         JPanel topBar = new JPanel();
         JLabel time = new JLabel("5:00");
         topBar.add(time);
@@ -81,24 +81,21 @@ public class SpelBord {
         topBar.add(restart);
         topBar.setMaximumSize(new Dimension(WIDTH, 20));
         
+        // Generate and load up field
         setupField();
-        
-        //Prepare GridLayout
-        GridLayout grid = new GridLayout(ROWS, COLUMNS);
-        board.setLayout(grid);
-        
-        board.setBackground(Color.WHITE);
 
         frame.setLayout(new BorderLayout());
-        frame.add(topBar, BorderLayout.PAGE_START);
         // Adding JPanel to the JFrame
+        frame.add(topBar, BorderLayout.PAGE_START);
         frame.add(board, BorderLayout.CENTER);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         
+        // add key listener to frame to move player
         setListener(frame);
         
+        // Create and start timer
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -119,7 +116,7 @@ public class SpelBord {
         timer.start();
     }
     
-    //Initialize the listener for keys inputs
+    //Initialize the listener for key inputs
     private static void setListener(JFrame frame){
         
         frame.removeKeyListener(mySpeler);
@@ -130,9 +127,10 @@ public class SpelBord {
         frame.setFocusTraversalKeysEnabled(false); 
                
     }
-    
-    //Maakt de veld in een de array veld
+
+    // Save values to 2d Array
     private static void initVeld(){
+        
         //Standard Vars to use
         Random rand = new Random();
     
@@ -170,11 +168,8 @@ public class SpelBord {
                 //Sleutel Posities
                 else if(i == 4 && j == 4 || i == 0 && j == 9  || i == 6 && j == 6){
                     veld = new Sleutel(coordinaten, codes.get(rand.nextInt(4)));
-                    //Experiment                    
-//                    object = new Sleutel(500);
-//                    System.out.println(object.getClass());
                 }
-                //Randomizer voor MUUR, LOOPVELD, BARRICADE
+                // Random muur or barricade
                 else{
                     int n = rand.nextInt(50) + 1;
                     if(n % 3 == 0){
@@ -207,6 +202,7 @@ public class SpelBord {
         veld.setIcon(icon);
     }
     
+    // Load up field
     public static void setupField(){
         board.removeAll();
         initVeld();  

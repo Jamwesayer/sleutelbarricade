@@ -15,10 +15,11 @@ import javax.swing.ImageIcon;
 import javax.swing.border.Border;
 
 /**
- *
+ * Version: 1.0
  * @author J_Administrator
  */
 public class Speler extends Veld implements KeyListener {
+    
     private Sleutel broekzak;
     private String direction;
     private Random random = new Random();
@@ -38,13 +39,9 @@ public class Speler extends Veld implements KeyListener {
         setAfbeelding(new ImageIcon(getWorkingDir() + "\\projectImg\\" + "Figure_"+direction+".png"));
     }
     
+    // Used to change direction of image according to location
     public void bewegen(String direction){
-        //String parameter erbij.
         this.direction = direction;
-    }
-    
-    public void sleutelGebruiken(){
-        
     }
     
     public Sleutel getBroekzak() {
@@ -68,39 +65,40 @@ public class Speler extends Veld implements KeyListener {
         int oldPlayerX = playerX;
         int oldPlayerY = playerY;
         
+        // check if user is out of bounds
         boolean outOfZone = false;
 
         int code = e.getKeyCode();
         switch(code){
             case KeyEvent.VK_UP:
-                System.out.println("pressed up");
                 direction = "UP";
                 if(playerX < 9)playerX++;
                 else outOfZone = true;
                 break;
             case KeyEvent.VK_DOWN:
-                System.out.println("pressed down");
                 direction = "DOWN";
                 if(playerX > 0)playerX--;
                 else outOfZone = true;
                 break;
             case KeyEvent.VK_LEFT:
-                System.out.println("pressed left");
                 direction = "LEFT";
                 if(playerY > 0)playerY--;
                 else outOfZone = true;
                 break;
             case KeyEvent.VK_RIGHT:
-                System.out.println("pressed right");
                 direction = "RIGHT";
                 if(playerY < 9)playerY++;
                 else outOfZone = true;
                 break;
         }
 
+        // current location of player
         Veld oldVeld = SpelBord.getVelden()[oldPlayerX][oldPlayerY];
+        
+        // possible new location of player
         Veld newVeld = SpelBord.getVelden()[playerX][playerY];
 
+        // check fir possible collisions with objects
         if(newVeld instanceof GameObject){
             GameObject gameObject = (GameObject)newVeld;
             gameObject.collision(this);
@@ -113,6 +111,7 @@ public class Speler extends Veld implements KeyListener {
             newVeld = SpelBord.getVelden()[playerX][playerY];                    
         }
 
+        // check if player can go through
         if(outOfZone || newVeld instanceof Muur)return;
         if(newVeld instanceof Barricade && !((Barricade)newVeld).isIsOpen())return;
 
@@ -120,6 +119,7 @@ public class Speler extends Veld implements KeyListener {
         getMyCoordinaten().setY(playerY);
         setDirection(direction);
         
+        // set player to new field
         oldVeld.setSpeler(null);
         newVeld.setSpeler(this);
 
@@ -142,6 +142,7 @@ public class Speler extends Veld implements KeyListener {
         SpelBord.getBoard().revalidate();
         SpelBord.getBoard().repaint();   
         
+        // after certain moves randomize field
         if(random.nextInt(5) == 1)
             SpelBord.setupField();
     }

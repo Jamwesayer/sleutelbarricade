@@ -6,7 +6,8 @@
 package models;
 
 /**
- *
+ * This class has the purpose to be the parent of all objects that require actions on collision
+ * Version: 1.0
  * @author J_Administrator
  */
 public abstract class GameObject extends Veld{

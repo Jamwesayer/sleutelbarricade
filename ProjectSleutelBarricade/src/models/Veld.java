@@ -9,7 +9,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
- *
+ * This class is the template for all possible fields
+ * Version: 1.0
  * @author J_Administrator
  */
 public class Veld extends JLabel{
@@ -20,10 +21,12 @@ public class Veld extends JLabel{
     private ImageIcon afbeelding;
     private Speler speler;
     
+    // setting directory to locate images
     private String workingDir = System.getProperty("user.dir");
     
     public Veld(Coordinaten coordinaten){
-        this.myCoordinaten = coordinaten;        
+        this.myCoordinaten = coordinaten;  
+        // fix image location if on mac os
         if("MAC OS X".equals(System.getProperty("os.name"))) workingDir = System.getProperty("user.home");
     }
 

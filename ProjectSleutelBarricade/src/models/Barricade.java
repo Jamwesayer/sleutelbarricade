@@ -10,10 +10,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Version: 1.0
  * @author J_Administrator
  */
 public class Barricade extends GameObject {
+    
     private int pin;
     private boolean isOpen;
     
@@ -47,13 +48,15 @@ public class Barricade extends GameObject {
 
     @Override
     public void collision(Speler speler) {
+        // if current barricade is open get out
         if(this.isOpen)return;
+        
+        // if player does have a key check i pin equals current barricade pin else show popup message 
         if(speler.getBroekzak() != null){
             if(speler.getBroekzak().getPin() == pin)
                 openBarricade();
             else JOptionPane.showMessageDialog(SpelBord.getFrame(), "De sleutel heeft niet de zelfde pin");
         }
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -6,7 +6,7 @@
 package models;
 
 /**
- *
+ * Version: 1.0
  * @author burak
  */
 public class Coordinaten {

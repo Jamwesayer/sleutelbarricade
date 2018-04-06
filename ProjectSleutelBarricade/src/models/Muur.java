@@ -8,7 +8,7 @@ package models;
 import javax.swing.ImageIcon;
 
 /**
- *
+ * Version: 1.0
  * @author J_Administrator
  */
 public class Muur extends GameObject {

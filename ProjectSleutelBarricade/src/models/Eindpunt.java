@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  */
 
 /**
- *
+ * Version: 1.0
  * @author James
  */
 public class Eindpunt extends GameObject {
@@ -23,6 +23,7 @@ public class Eindpunt extends GameObject {
 
     @Override
     public void collision(Speler speler) {
+        // display popup with message
         JOptionPane.showMessageDialog(SpelBord.getFrame(), "Je hebt gewonnen!");
     }
     

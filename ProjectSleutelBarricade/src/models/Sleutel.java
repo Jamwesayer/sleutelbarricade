@@ -8,7 +8,7 @@ package models;
 import javax.swing.ImageIcon;
 
 /**
- *
+ * Version: 1.0
  * @author J_Administrator
  */
 public class Sleutel extends GameObject {
@@ -44,12 +44,7 @@ public class Sleutel extends GameObject {
 
     @Override
     public void collision(Speler speler) {
-        //Decomment if the player can't get another key without it
-        //if(speler.getBroekzak() != null || opgepakt)return;
-        //opgepakt = true;
-        
         speler.setBroekzak(this);
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
