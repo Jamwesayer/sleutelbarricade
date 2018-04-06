@@ -47,6 +47,7 @@ public class SpelBord {
     private static boolean gameFailed = false;
     
     private static int totalSeconds = 60 * 5;
+    private static ArrayList<Integer> codes = new ArrayList();
     
     //Main Method
     public static void main(String[] args){
@@ -136,20 +137,25 @@ public class SpelBord {
     
         if(mySpeler == null){
             mySpeler = new Speler(new Coordinaten(0, 0));
+            codes.clear();
+            for(int i = 0; i < 4; i++){
+                codes.add(rand.nextInt(9999));
+            }
         } else {
             if(gameFailed){
                 mySpeler.getMyCoordinaten().setX(0);
                 mySpeler.getMyCoordinaten().setY(0);
+                codes.clear();
+                for(int i = 0; i < 4; i++){
+                    codes.add(rand.nextInt(9999));
+                }
             } else {
                 mySpeler.getMyCoordinaten().setX(mySpeler.getMyCoordinaten().getX());
                 mySpeler.getMyCoordinaten().setY(mySpeler.getMyCoordinaten().getY());
             }
         }
         
-        ArrayList<Integer> codes = new ArrayList();
-        for(int i = 0; i < 4; i++){
-            codes.add(rand.nextInt(9999));
-        }
+        System.out.println(codes.size());
         
         // Filling up rows and columns
         for(int i = 0; i < ROWS; i++){
