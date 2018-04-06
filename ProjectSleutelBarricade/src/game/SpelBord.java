@@ -106,7 +106,7 @@ public class SpelBord {
                 time.setText(String.format("%2d:%02d", minutes, seconds));
                 if(totalSeconds == 0){
                     Object[] options = {"OK"};
-                    int input = JOptionPane.showOptionDialog(frame, "You lose sucker!", "You lost", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    int input = JOptionPane.showOptionDialog(frame, "You lose sucker! >:)", "You lost", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     if(input == JOptionPane.OK_OPTION){
                         gameFailed = true;
                         restart.doClick();
